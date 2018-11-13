@@ -16,4 +16,16 @@ export default class AppConfig {
     static get nginxUsrPsw(): string {
         return defaultConfig.nginxUsrPsw;
     }
+
+    static get requestsPerInterval() {
+        return defaultConfig.requestsPerInterval;
+    }
+
+    static get rampUpInterval() {
+        return defaultConfig.rampUpInterval;
+    }
+
+    static get maxWorkers() {
+        return defaultConfig.maxWorkers;
+    }
 }

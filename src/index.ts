@@ -1,19 +1,20 @@
 import cluster from 'cluster';
 import os from 'os';
 import work from './worker';
+import AppConfig from './AppConfig';
 
 const numCPUs = os.cpus().length;
 const allProxies: string[] = require('./../data/proxies.json');
 
 /////////////////
-const requestsPerMinute = 30;
+const {requestsPerInterval, maxWorkers} = AppConfig;
 
-let startWorkers = Math.min(2, calcNumberOfWorkers(requestsPerMinute, numCPUs));
+let startWorkers = Math.min(maxWorkers, calcNumberOfWorkers(requestsPerInterval, numCPUs));
 let offset = Math.max(1, Math.floor(allProxies.length / startWorkers));
-let requestsPerWorker = Math.max(1, Math.floor(requestsPerMinute/startWorkers));
+let requestsPerWorker = Math.max(1, Math.floor(requestsPerInterval/startWorkers));
 
 ////////////////
-console.log({requestsPerMinute, startWorkers, length: allProxies.length, offset});
+console.log({requestsPerInterval, startWorkers, length: allProxies.length, offset});
 
 const workers = startWorkers; // Math.min(startWorkers, numCPUs);
 console.log('will start ' + workers + ' workers.');

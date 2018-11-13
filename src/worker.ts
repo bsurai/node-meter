@@ -51,7 +51,7 @@ export default async function main() {
       // console.log(params);
 
       const agent = new Agent(AppConfig);
-      await agent.run(params, nestedURLs, 60*1000);
+      await agent.run(params, nestedURLs, AppConfig.rampUpInterval);
     }
   }
   catch (err) {
