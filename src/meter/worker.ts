@@ -1,8 +1,8 @@
-import './array-polyfill';
+import '../array-polyfill';
 import Agent from './Agent';
 import {IRequestParams} from './Agent';
 import AppConfig from './AppConfig';
-import delay from './utils/delay';
+import delay from '../utils/delay';
 
 const allProxies: string[] = require('./../data/proxies.json');
 const products: string[] = require('./../data/products.json');

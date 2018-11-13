@@ -1,5 +1,5 @@
 import request from 'request';
-import delay from './utils/delay';
+import delay from '../utils/delay';
 
 export interface IRequestParams {
   productName: string;
