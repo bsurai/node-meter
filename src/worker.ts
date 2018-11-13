@@ -31,7 +31,8 @@ export default async function main() {
       return;
     }
 
-    await delay(offset * Math.random());
+    const dalayInterval = offset / 2; // * Math.random();
+    await delay(dalayInterval);
     while (true) {
       proxies.shuffle();
       products.shuffle();

@@ -8,7 +8,7 @@ const allProxies: string[] = require('./../data/proxies.json');
 /////////////////
 const requestsPerMinute = 30;
 
-let startWorkers = 2; // calcNumberOfWorkers(requestsPerMinute, numCPUs);
+let startWorkers = Math.min(2, calcNumberOfWorkers(requestsPerMinute, numCPUs));
 let offset = Math.max(1, Math.floor(allProxies.length / startWorkers));
 let requestsPerWorker = Math.max(1, Math.floor(requestsPerMinute/startWorkers));
 
