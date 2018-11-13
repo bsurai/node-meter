@@ -15,7 +15,10 @@
   },
   "devDependencies": {
     "@types/node": "^10.12.6",
-    "@types/request": "^2.48.1"
+    "@types/request": "^2.48.1",
+    "typescript": "^3.1.6",
+    "tslint": "^5.11.0",
+    "tslint-eslint-rules": "^5.4.0"
   },
   "author": "Bogdan Surai",
   "license": "ISC"

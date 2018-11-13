@@ -9,7 +9,7 @@ export default class AppConfig {
         return defaultConfig.utm;
     }
 
-    static get headers():[] {
+    static get headers(): [] {
         return defaultConfig.headers;
     }
 

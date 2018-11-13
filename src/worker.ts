@@ -40,12 +40,12 @@ export default async function main() {
       const params = [] as IRequestParams[];
 
       for (let ind = 0; ind < requestsPerWorker; ind++) {
-          const proxy = <string>proxies.shift();
+          const proxy = proxies.shift() as string;
           proxies.push(proxy);
 
-          const productName = <string>products.shift();
+          const productName = products.shift() as string;
           products.push(productName);
-          
+
           params.push({productName, proxy});
       }
       // console.log(params);

@@ -1,0 +1,22 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "trailing-comma": true,
+        "no-console": false,
+        "no-trailing-whitespace": true,
+        "no-var-requires": false,
+        "quotemark": [true, "single"],
+        "ordered-imports": false,
+        "interface-name": false,
+        "one-line": false,
+        "object-literal-sort-keys": false,
+        "no-bitwise": false
+    },
+    "rulesDirectory": [
+        "node_modules/tslint-eslint-rules/dist/rules"
+    ]
+}

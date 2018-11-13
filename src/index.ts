@@ -9,14 +9,12 @@ const allProxies: string[] = require('./../data/proxies.json');
 /////////////////
 const {requestsPerInterval, maxWorkers} = AppConfig;
 
-let startWorkers = Math.min(maxWorkers, calcNumberOfWorkers(requestsPerInterval, numCPUs));
-let offset = Math.max(1, Math.floor(allProxies.length / startWorkers));
-let requestsPerWorker = Math.max(1, Math.floor(requestsPerInterval/startWorkers));
+const workers = Math.min(maxWorkers, calcNumberOfWorkers(requestsPerInterval, numCPUs));
+const offset = Math.max(1, Math.floor(allProxies.length / workers));
+const requestsPerWorker = Math.max(1, Math.floor(requestsPerInterval / workers));
 
 ////////////////
-console.log({requestsPerInterval, startWorkers, length: allProxies.length, offset});
-
-const workers = startWorkers; // Math.min(startWorkers, numCPUs);
+console.log({requestsPerInterval, workers, length: allProxies.length, offset});
 console.log('will start ' + workers + ' workers.');
 
 if (cluster.isMaster) {
@@ -40,20 +38,20 @@ else {
   work();
 }
 
-function calcNumberOfWorkers(requestsPerMinute: number, numCPUs: number): number {
+function calcNumberOfWorkers(requestsPerMinute: number, cpus: number): number {
   const limitOfRequestPerWorker1 = 8;
   const limitOfRequestPerWorker2 = 80;
 
-  let startWorkers = 0;
+  let needWorkers = 0;
   while (true) {
-    startWorkers++;
+    needWorkers++;
 
-    if (startWorkers < numCPUs && requestsPerMinute <= startWorkers*limitOfRequestPerWorker1) {
+    if (needWorkers < cpus && requestsPerMinute <= needWorkers * limitOfRequestPerWorker1) {
       break;
     }
-    else if (startWorkers >= numCPUs && requestsPerMinute <= startWorkers*limitOfRequestPerWorker2) {
+    else if (needWorkers >= cpus && requestsPerMinute <= needWorkers * limitOfRequestPerWorker2) {
       break;
     }
   }
-  return startWorkers;
+  return needWorkers;
 }
