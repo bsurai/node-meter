@@ -1,3 +1,17 @@
+declare interface Array<T> {
+      remove(o: T): Array<T>; 
+
+      randomElement(): T;
+      randomElementDelete(): T;
+      __find(callback: () => any): T;
+      shuffle(): Array<T>;
+}
+
+declare interface Math {
+  getRandomNumber(min: number, max: number): number;
+}
+
+
 // eslint-disable-next-line no-extend-native
 Array.prototype.randomElement = function() {
     return this[Math.floor(Math.random() * this.length)];

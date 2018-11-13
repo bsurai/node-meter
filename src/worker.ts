@@ -1,9 +1,11 @@
-require('./array-polyfill');
-const Agent = require('./Agent');
-const allProxies = require('./../data/proxies.json');
-const products = require('./../data/products.json');
-const AppConfig = require('./AppConfig');
-const delay = require('./utils/delay');
+import './array-polyfill';
+import Agent from './Agent';
+import {IRequestParams} from './Agent';
+import AppConfig from './AppConfig';
+import delay from './utils/delay';
+
+const allProxies: string[] = require('./../data/proxies.json');
+const products: string[] = require('./../data/products.json');
 
 // const requests = 2000;
 
@@ -11,10 +13,12 @@ const nestedURLs = require('./../data/nestedURLs.json');
 
 // main();
 
-async function main() {
+export default async function main() {
   try {
     console.log('-----------main-------------');
-    const {requestsPerWorker, offset} = process.env;
+    const requestsPerWorker = Number(process.env.requestsPerWorker);
+    const offset = Number(process.env.offset);
+
     console.log({requestsPerWorker, offset});
     if (!requestsPerWorker) {
       return;
@@ -32,13 +36,13 @@ async function main() {
       proxies.shuffle();
       products.shuffle();
 
-      const params = [];
+      const params = [] as IRequestParams[];
 
       for (let ind = 0; ind < requestsPerWorker; ind++) {
-          const proxy = proxies.shift();
+          const proxy = <string>proxies.shift();
           proxies.push(proxy);
 
-          const productName = products.shift();
+          const productName = <string>products.shift();
           products.push(productName);
           
           params.push({productName, proxy});
@@ -53,5 +57,3 @@ async function main() {
     console.log('ERR 3: ', err);
   }
 }
-
-module.exports = main;

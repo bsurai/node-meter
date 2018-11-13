@@ -1,7 +1,9 @@
-const cluster = require('cluster');
-const numCPUs = require('os').cpus().length;
-const work = require('./worker');
-const allProxies = require('./../data/proxies.json');
+import cluster from 'cluster';
+import os from 'os';
+import work from './worker';
+
+const numCPUs = os.cpus().length;
+const allProxies: string[] = require('./../data/proxies.json');
 
 /////////////////
 const requestsPerMinute = 30;
@@ -37,7 +39,7 @@ else {
   work();
 }
 
-function calcNumberOfWorkers(requestsPerMinute, numCPUs) {
+function calcNumberOfWorkers(requestsPerMinute: number, numCPUs: number): number {
   const limitOfRequestPerWorker1 = 8;
   const limitOfRequestPerWorker2 = 80;
 

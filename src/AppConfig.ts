@@ -1,21 +1,19 @@
 const defaultConfig = require('./../settings/config-prod.json');
 
-class AppConfig {
+export default class AppConfig {
     static get host() {
         return defaultConfig.host;
     }
 
-    static get utm() {
+    static get utm(): string {
         return defaultConfig.utm;
     }
 
-    static get headers() {
+    static get headers():[] {
         return defaultConfig.headers;
     }
 
-    static get nginxUsrPsw() {
+    static get nginxUsrPsw(): string {
         return defaultConfig.nginxUsrPsw;
     }
 }
-
-module.exports = AppConfig;

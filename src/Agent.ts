@@ -1,14 +1,28 @@
-const request = require('request');
-const delay = require('./utils/delay');
+import request from 'request';
+import delay from './utils/delay';
 
-const errors = [];
+export interface IRequestParams {
+  productName: string;
+  proxy: string
+}
 
-class Agent {
-  constructor(config) {
+export interface IConfig {
+  host: string;
+  headers: [];
+  utm: string;
+  nginxUsrPsw: string;
+};
+
+const errors = [Error];
+
+export default class Agent {
+  config: IConfig;
+
+  constructor(config: IConfig) {
     this.config = config;
   }
 
-  async run(params, nestedURLs, duration = 0) {
+  async run(params: IRequestParams[], nestedURLs: string[], duration = 0) {
     console.log('started at ', new Date());
     setTimeout(() => {
       // console.log('ended at ', new Date());
@@ -31,7 +45,7 @@ class Agent {
     
   }
 
-  async requestProductPage(item, nestedURLs) {
+  async requestProductPage(item: IRequestParams, nestedURLs: string[]) {
     try {
       console.log('----- sent ------ ', item.proxy, item.productName, new Date());
       const {host, headers, utm, nginxUsrPsw} = this.config;
@@ -89,5 +103,3 @@ class Agent {
     }
   }
 }
-
-module.exports = Agent;
