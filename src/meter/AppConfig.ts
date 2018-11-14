@@ -1,4 +1,4 @@
-const defaultConfig = require('./../settings/config-prod.json');
+const defaultConfig = require('./../../settings/config-prod.json');
 
 export default class AppConfig {
     static get host() {
