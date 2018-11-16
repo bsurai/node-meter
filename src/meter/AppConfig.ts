@@ -1,4 +1,8 @@
-const defaultConfig = require('./../../settings/config-prod.json');
+import {writeFileSync} from 'fs';
+import {join} from 'path';
+
+const configPath = './../../settings/config-prod.json';
+let defaultConfig = require(configPath);
 
 export default class AppConfig {
     static get host() {
@@ -28,4 +32,13 @@ export default class AppConfig {
     static get maxWorkers() {
         return defaultConfig.maxWorkers;
     }
-}
+
+    public static setNewValues(values: object) {
+        defaultConfig = {
+            ...defaultConfig,
+            ...values,
+        };
+
+        writeFileSync(join(__dirname, configPath), JSON.stringify(defaultConfig));
+    }
+ }

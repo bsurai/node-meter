@@ -9,15 +9,20 @@ export default class HttpServer {
       name: 'node-meter',
       version: '1.0.0'
     });
+
+    this.server.use(function crossOrigin(req, res, next){
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+      return next();
+    });
+    this.server.use(restify.plugins.bodyParser());
   }
 
   public get(path: string, cb: RequestHandler) {
-    console.log('server get /setup');
     this.server.get(path, cb);
   }
 
   public post(path: string, cb: RequestHandler) {
-    console.log('server post /setup');
     this.server.post(path, cb);
   }
 

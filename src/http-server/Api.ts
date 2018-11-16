@@ -1,11 +1,12 @@
 import Controller from './Controller';
 
 interface IReq {
-  body?: object;
+  body?: string;
 }
 
 interface IRes {
   json(p: object): void;
+  status(p: number): void;
 }
 
 interface IServer {
@@ -15,13 +16,7 @@ interface IServer {
 
 export default class Api {
   public connect(server: IServer) {
-    server.get('/setup', (req, res) => {
-      console.log('api get /setup');
-      res.json(Controller.config);
-    });
-
-    server.post('/setup', (req, res) => {
-      console.log('api post /setup');
-    });
+    server.get('/setup', Controller.getConfigs);
+    server.post('/setup', Controller.updateConfigs);
   }
 }
