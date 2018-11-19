@@ -15,8 +15,15 @@ interface IServer {
 }
 
 export default class Api {
+  private controller: Controller = null;
+
+  constructor() {
+    this. controller = new Controller();
+  }
   public connect(server: IServer) {
-    server.get('/setup', Controller.getConfigs);
-    server.post('/setup', Controller.updateConfigs);
+    server.post('/setup/start', (req, res) => this.controller.start(req, res));
+    server.post('/setup/stop', (req, res) => this.controller.stop(req, res));
+    server.get('/setup', (req, res) => this.controller.getConfigs(req, res));
+    server.post('/setup', (req, res) => this.controller.updateConfigsAndRestart(req, res));
   }
 }
