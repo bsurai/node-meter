@@ -45,8 +45,6 @@ export default class Controller {
 
   public async start(req: IReq, res: IRes) {
     try {
-      console.log('111111111');
-      console.log(this);
       await this.startMeter();
       res.json({ok: true});
     }
@@ -72,7 +70,7 @@ export default class Controller {
       try {
         console.log('22222222');
         if (this.meter) {
-          return;
+          return resolve(this.meter);
         }
         this.meter = fork(join(__dirname, '../meter'));
         this.meter.once('error', (error: Error) => reject(error));
@@ -88,7 +86,7 @@ export default class Controller {
     return new Promise((resolve, reject) => {
       try {
         if (!this.meter) {
-          return;
+          return resolve();
         }
         this.meter.kill();
         this.meter = null;
