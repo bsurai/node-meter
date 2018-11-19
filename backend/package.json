@@ -1,0 +1,28 @@
+{
+  "name": "jmeter-node",
+  "version": "1.0.0",
+  "description": "try to avoid java's jmeter",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node ./dist/meter/index",
+    "server:dev": "tsc && node ./dist/http-server",
+    "compile": "tsc",
+    "start:dev": "tsc && npm start",
+    "test": "test"
+  },
+  "dependencies": {
+    "opn": "^5.4.0",
+    "request": "^2.88.0",
+    "restify": "^7.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.6",
+    "@types/request": "^2.48.1",
+    "@types/restify": "^7.2.6",
+    "typescript": "^3.1.6",
+    "tslint": "^5.11.0",
+    "tslint-eslint-rules": "^5.4.0"
+  },
+  "author": "Bogdan Surai",
+  "license": "ISC"
+}
