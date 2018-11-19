@@ -14,7 +14,7 @@ class SetupPage extends React.PureComponent<any, IState> {
   }
 
   public render() {
-    const {data, error, loading, modified} = this.state;
+    const {data, error, loading, modified, running} = this.state;
 
     const show = [];
     if (loading) {
@@ -26,7 +26,7 @@ class SetupPage extends React.PureComponent<any, IState> {
     }
 
     if (data && !loading) {
-      show.push(this.renderForm(modified, loading, data));
+      show.push(this.renderForm(modified, loading, running, data));
     }
 
     return (
@@ -54,12 +54,12 @@ class SetupPage extends React.PureComponent<any, IState> {
     Controller.stopMeter(this);
   }
 
-  private renderForm = (modified: boolean, loading:boolean, data: IData) => {
+  private renderForm = (modified: boolean, loading:boolean, running:boolean, data: IData) => {
     const {userAgent, host, workers, rampUp, requests, utm} = data;
     return <Fade tag='div' key='form'>
               <br/>
-              <Button disabled={modified || loading} color="success" onClick={this.onStart}>Start</Button>{' '}
-              <Button disabled={modified || loading} color="secondary" onClick={this.onStop}>Stop</Button>{' '}
+              <Button disabled={modified || loading || running} color="success" onClick={this.onStart}>Start</Button>{' '}
+              <Button disabled={modified || loading || !running} color="secondary" onClick={this.onStop}>Stop</Button>{' '}
               <Button disabled={!modified || loading} color="warning" onClick={this.onApply}>Apply</Button>
               <br/><br/>
               <Form

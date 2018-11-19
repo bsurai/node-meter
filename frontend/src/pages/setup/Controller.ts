@@ -11,6 +11,7 @@ export interface IDataDTO {
   requestsPerInterval?: number;
   utm?: string;
   headers?: {[k: string]: string };
+  running?: boolean;
 }
 
 export interface IData {
@@ -77,6 +78,7 @@ class Controller {
         workers: data.maxWorkers,
       };
       this.dataHash = hash(this.data || {});
+      this.running = data.running;
 
       this.loading = false;
       this.modified = false;
@@ -134,6 +136,7 @@ class Controller {
         throw new Error(`${resp.status} ${resp.statusText} ${err.name} ${err.message} ${err.stack}`);
       }
       
+      this.running = true;
       this.loading = false;
       this.setState(component);
     }
@@ -155,6 +158,7 @@ class Controller {
         throw new Error(`${resp.status} ${resp.statusText} ${err.name} ${err.message} ${err.stack}`);
       }
       
+      this.running = false;
       this.loading = false;
       this.setState(component);
     }

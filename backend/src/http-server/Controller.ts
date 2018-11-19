@@ -20,7 +20,16 @@ export default class Controller {
 
   public getConfigs(req: IReq, res: IRes) {
     const {host, utm, headers, nginxUsrPsw, requestsPerInterval, rampUpInterval, maxWorkers} = AppConfig;
-    res.json({host, utm, headers, nginxUsrPsw, requestsPerInterval, rampUpInterval, maxWorkers});
+    res.json({
+      running: !!this.meter,
+      host,
+      utm,
+      headers,
+      nginxUsrPsw,
+      requestsPerInterval,
+      rampUpInterval,
+      maxWorkers
+    });
   }
 
   public async updateConfigsAndRestart(req: IReq, res: IRes) {
