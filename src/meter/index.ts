@@ -4,7 +4,7 @@ import work from './worker';
 import AppConfig from './AppConfig';
 
 const numCPUs = os.cpus().length;
-const allProxies: string[] = require('./../data/proxies.json');
+const allProxies: string[] = require('./../../data/proxies.json');
 
 /////////////////
 const {requestsPerInterval, maxWorkers} = AppConfig;

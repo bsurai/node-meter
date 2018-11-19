@@ -1,7 +1,7 @@
 import {writeFileSync} from 'fs';
 import {join} from 'path';
 
-const configPath = './../../settings/config-prod.json';
+const configPath = '../../settings/config-prod.json';
 let defaultConfig = require(configPath);
 
 export default class AppConfig {

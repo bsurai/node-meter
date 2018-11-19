@@ -4,12 +4,12 @@ import {IRequestParams} from './Agent';
 import AppConfig from './AppConfig';
 import delay from '../utils/delay';
 
-const allProxies: string[] = require('./../data/proxies.json');
-const products: string[] = require('./../data/products.json');
+const allProxies: string[] = require('./../../data/proxies.json');
+const products: string[] = require('./../../data/products.json');
 
 // const requests = 2000;
 
-const nestedURLs = require('./../data/nestedURLs.json');
+const nestedURLs = require('./../../data/nestedURLs.json');
 
 // main();
 

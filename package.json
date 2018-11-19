@@ -4,7 +4,7 @@
   "description": "try to avoid java's jmeter",
   "main": "./src/index.js",
   "scripts": {
-    "start": "node ./dist/index",
+    "start": "node ./dist/meter/index",
     "server:dev": "tsc && node ./dist/http-server",
     "compile": "tsc",
     "start:dev": "tsc && npm start",

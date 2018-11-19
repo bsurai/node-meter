@@ -14,7 +14,8 @@
         "interface-name": false,
         "one-line": false,
         "object-literal-sort-keys": false,
-        "no-bitwise": false
+        "no-bitwise": false,
+        "member-ordering": false
     },
     "rulesDirectory": [
         "node_modules/tslint-eslint-rules/dist/rules"
