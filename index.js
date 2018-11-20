@@ -7,6 +7,7 @@ const cpback = exec('npm run server:dev --prefix ./backend', (error, stdout, std
   }
 });
 cpback.stdout.pipe(process.stdout);
+cpback.stderr.pipe(process.stderr);
 
 
 const cpfront = exec('npm run start --prefix ./frontend', (error, stdout, stderr) => {
@@ -16,3 +17,4 @@ const cpfront = exec('npm run start --prefix ./frontend', (error, stdout, stderr
   }
 });
 cpfront.stdout.pipe(process.stdout);
+cpfront.stderr.pipe(process.stderr);
