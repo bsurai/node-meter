@@ -59,7 +59,7 @@ class SetupPage extends React.PureComponent<any, IState> {
     return <Fade tag='div' key='form'>
               <br/>
               <Button disabled={modified || loading || running} color="success" onClick={this.onStart}>Start</Button>{' '}
-              <Button disabled={modified || loading || !running} color="secondary" onClick={this.onStop}>Stop</Button>{' '}
+              <Button disabled={loading || !running} color="secondary" onClick={this.onStop}>Stop</Button>{' '}
               <Button disabled={!modified || loading} color="warning" onClick={this.onApply}>Apply</Button>
               <br/><br/>
               <Form
