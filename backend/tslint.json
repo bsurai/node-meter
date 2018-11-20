@@ -15,7 +15,9 @@
         "one-line": false,
         "object-literal-sort-keys": false,
         "no-bitwise": false,
-        "member-ordering": false
+        "member-ordering": false,
+        "max-line-length": false,
+        "prefer-for-of": false
     },
     "rulesDirectory": [
         "node_modules/tslint-eslint-rules/dist/rules"

@@ -24,7 +24,7 @@ export default async function main() {
       return;
     }
 
-    const proxies = allProxies.slice(offset, offset + requestsPerWorker);
+    const proxies = allProxies.slice(offset, offset ? 2 * offset : undefined);
 
     if (!proxies.length) {
       console.log(`Empty proxies list. offset=${offset}. requestsPerWorker=${requestsPerWorker}`);

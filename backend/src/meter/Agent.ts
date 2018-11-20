@@ -17,26 +17,30 @@ const errors = [Error];
 
 export default class Agent {
   private config: IConfig;
+  private sentReqests: number = 0;
+  private goodResponses: number = 0;
+  private badResponses: number = 0;
 
   constructor(config: IConfig) {
     this.config = config;
   }
 
   public async run(params: IRequestParams[], nestedURLs: string[], duration = 0) {
-    console.log('started at ', new Date());
-    setTimeout(() => {
-      // console.log('ended at ', new Date());
-      // console.log(errors.length)
-    }, 7000);
+    console.log(`${new Date()} - started`);
 
     try {
-      const interval = params.length ? Math.floor(duration / params.length) : 0;
+      const mainTime = 0.95;
+      const taleTime = 1 - mainTime;
+      const interval = params.length ? Math.floor(mainTime * duration / params.length) : 0;
       console.log('interval = ', interval);
 
       for (const item of params) {
         await delay(interval);
         this.requestProductPage(item, nestedURLs);
       }
+      await delay(taleTime * duration);
+      console.log(`${new Date()} - finished. sent=${this.sentReqests} good=${this.goodResponses} bad=${this.badResponses}`);
+      // console.log(`sent=${this.sentReqests} good=${this.goodResponses} bad=${this.badResponses}`);
     }
     catch (err) {
       console.log('!!! ERR !!!');
@@ -46,7 +50,8 @@ export default class Agent {
 
   private async requestProductPage(item: IRequestParams, nestedURLs: string[]) {
     try {
-      console.log('----- sent ------ ', item.proxy, item.productName, new Date());
+      this.sentReqests++;
+      // console.log('----- sent ------ ', item.proxy, item.productName, new Date());
       const {host, headers, utm, nginxUsrPsw} = this.config;
       const options = {
         url: `https://${nginxUsrPsw}${host}/product/${item.productName}${utm}`,
@@ -65,6 +70,7 @@ export default class Agent {
         //  console.log('body:', body);
 
         if (error) {
+          this.badResponses++;
           /* errors.push(error);
           console.log('................');
           console.log('error:', error); // Print the error if one occurred
@@ -73,10 +79,11 @@ export default class Agent {
           console.log('body:', !!body); */
           return;
         }
+        this.goodResponses++;
 
-        // if (true) {
-        //   return;
-        // }
+        if (true) {
+           return;
+        }
 
         for (const nested of nestedURLs) {
           const opt2 = {

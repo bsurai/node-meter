@@ -77,7 +77,6 @@ export default class Controller {
   private startMeter(): Promise<ChildProcess> {
     return new Promise((resolve, reject) => {
       try {
-        console.log('22222222');
         if (this.meter) {
           return resolve(this.meter);
         }
