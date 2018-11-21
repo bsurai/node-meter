@@ -2,7 +2,7 @@ import request from 'request';
 import delay from '../utils/delay';
 
 export interface IRequestParams {
-  productName: string;
+  path: string;
   proxy: string;
 }
 
@@ -29,7 +29,7 @@ export default class Agent {
     console.log(`${new Date()} - started`);
 
     try {
-      const mainTime = 0.95;
+      const mainTime = 0.9;
       const taleTime = 1 - mainTime;
       const interval = params.length ? Math.floor(mainTime * duration / params.length) : 0;
       console.log('interval = ', interval);
@@ -53,8 +53,9 @@ export default class Agent {
       this.sentReqests++;
       // console.log('----- sent ------ ', item.proxy, item.productName, new Date());
       const {host, headers, utm, nginxUsrPsw} = this.config;
+      const url = `https://${nginxUsrPsw}${host}/${item.path}${utm}`;
       const options = {
-        url: `https://${nginxUsrPsw}${host}/product/${item.productName}${utm}`,
+        url,
         proxy: `http://${item.proxy}`,
         headers,
         strictSSL: false
@@ -69,17 +70,30 @@ export default class Agent {
         // Print the response status code if a response was received
         //  console.log('body:', body);
 
-        if (error) {
+        if (!!response && !error && response.statusCode >= 200) {
           this.badResponses++;
+          console.log(response.statusCode, ' ', response.statusMessage, ' ', item.proxy, ' ', url);
+          return;
+        }
+        else if (error) {
+          this.badResponses++;
+          console.log(error.message );
+          return;
+        }
+        else if (!!response && response.statusCode === 200) {
+          this.goodResponses++;
+          return;
+        }
+        else {
+          console.log('Error with the response: Something else');
+          return;
+        }
           /* errors.push(error);
           console.log('................');
           console.log('error:', error); // Print the error if one occurred
           console.log('statusCode:', response && response.statusCode);
           // Print the response status code if a response was received
           console.log('body:', !!body); */
-          return;
-        }
-        this.goodResponses++;
 
         if (true) {
            return;

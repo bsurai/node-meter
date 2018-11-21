@@ -43,10 +43,10 @@ export default async function main() {
           const proxy = proxies.shift() as string;
           proxies.push(proxy);
 
-          const productName = products.shift() as string;
-          products.push(productName);
+          const path = products.shift() as string;
+          products.push(path);
 
-          params.push({productName, proxy});
+          params.push({path, proxy});
       }
       // console.log(params);
 
