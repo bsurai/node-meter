@@ -1,4 +1,5 @@
 import 'isomorphic-fetch';
+import {ILogResponses} from '../../../../backend/src/meter/AppConfig';
 const hash = require('object-hash');
 
 interface IComponent {
@@ -12,6 +13,7 @@ export interface IDataDTO {
   utm?: string;
   headers?: {[k: string]: string };
   running?: boolean;
+  logResponses: ILogResponses;
 }
 
 export interface IData {
@@ -21,6 +23,11 @@ export interface IData {
   requests?: number;
   utm?: string;
   userAgent?: string;
+  log200: boolean;
+  log300: boolean;
+  log400: boolean;
+  log500: boolean;
+  logError: boolean;
 }
 
 export interface IState {
@@ -76,6 +83,11 @@ class Controller {
         userAgent: data.headers['User-Agent'],
         utm: data.utm,
         workers: data.maxWorkers,
+        log200: data.logResponses[200],
+        log300: data.logResponses[300],
+        log400: data.logResponses[400],
+        log500: data.logResponses[500],
+        logError: data.logResponses.error,
       };
       this.dataHash = hash(this.data || {});
       this.running = data.running;
@@ -102,6 +114,13 @@ class Controller {
         rampUpInterval: this.data.rampUp,
         requestsPerInterval: this.data.requests,
         utm: this.data.utm,
+        logResponses: {
+          '200': this.data.log200,
+          '300': this.data.log300,
+          '400': this.data.log400,
+          '500': this.data.log500,
+          error: this.data.logError,
+        },
       };
       const json = JSON.stringify(body);
       const resp = await fetch('http://localhost:8080/setup', {method: 'POST', body: json});
@@ -168,10 +187,21 @@ class Controller {
     }
   }
 
-  public static handleChange(component: IComponent, key: keyof IData, value: string | number): void {
+  public static handleChangeInput(component: IComponent, key: keyof IData, value: string | number): void {
     this.data = {
       ...this.data,
       [key]: typeof this.data[key] === 'number' ? Number(value) : String(value),
+    }
+
+    const newHash = hash(this.data);
+    this.modified = newHash !== this.dataHash;
+    this.setState(component);
+  }
+
+  public static handleChangeCheckbox(component: IComponent, key: keyof IData, value: boolean): void {
+    this.data = {
+      ...this.data,
+      [key]: !!value,
     }
 
     const newHash = hash(this.data);

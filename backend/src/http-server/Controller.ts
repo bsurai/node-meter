@@ -1,5 +1,5 @@
 import {fork, ChildProcess} from 'child_process';
-import AppConfig from './../meter/AppConfig';
+import AppConfig, {IMeterConfigs} from './../meter/AppConfig';
 import {join} from 'path';
 
 interface IReq {
@@ -14,12 +14,12 @@ interface IRes {
 export default class Controller {
   private meter: ChildProcess = null;
 
-  public set config(newValues: object) {
+  public set config(newValues: IMeterConfigs) {
     AppConfig.setNewValues(newValues);
   }
 
   public getConfigs(req: IReq, res: IRes) {
-    const {host, utm, headers, nginxUsrPsw, requestsPerInterval, rampUpInterval, maxWorkers} = AppConfig;
+    const {host, utm, headers, nginxUsrPsw, requestsPerInterval, rampUpInterval, maxWorkers, logResponses} = AppConfig;
     res.json({
       running: !!this.meter,
       host,
@@ -28,7 +28,8 @@ export default class Controller {
       nginxUsrPsw,
       requestsPerInterval,
       rampUpInterval,
-      maxWorkers
+      maxWorkers,
+      logResponses
     });
   }
 

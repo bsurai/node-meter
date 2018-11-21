@@ -2,7 +2,26 @@ import {writeFileSync} from 'fs';
 import {join} from 'path';
 
 const configPath = '../../settings/config-prod.json';
-let defaultConfig = require(configPath);
+let defaultConfig: IMeterConfigs = require(configPath);
+
+export interface ILogResponses {
+    '200': boolean;
+    '300': boolean;
+    '400': boolean;
+    '500': boolean;
+    error: boolean;
+}
+
+export interface IMeterConfigs {
+    host: string;
+    utm: string;
+    headers: [];
+    nginxUsrPsw: string;
+    requestsPerInterval: number;
+    rampUpInterval: number;
+    maxWorkers: number;
+    logResponses: ILogResponses;
+}
 
 export default class AppConfig {
     static get host() {
@@ -33,10 +52,17 @@ export default class AppConfig {
         return defaultConfig.maxWorkers;
     }
 
-    public static setNewValues(values: object) {
+    static get logResponses() {
+        return {
+            ...defaultConfig.logResponses
+        };
+    }
+
+    public static setNewValues(values: IMeterConfigs) {
         defaultConfig = {
             ...defaultConfig,
             ...values,
+            logResponses: {...values.logResponses},
         };
 
         writeFileSync(join(__dirname, configPath), JSON.stringify(defaultConfig));

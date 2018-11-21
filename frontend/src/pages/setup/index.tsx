@@ -38,7 +38,14 @@ class SetupPage extends React.PureComponent<any, IState> {
 
   private handleChange = (key: keyof IData) => {
     return (event: any) => {
-      Controller.handleChange(this, key, event.target.value);
+     if (event.target.type === 'checkbox') {
+        Controller.handleChangeCheckbox(this, key, event.target.checked);
+      }
+      else {
+        Controller.handleChangeInput(this, key, event.target.value);
+      }
+      
+      
     };
   }
 
@@ -55,7 +62,7 @@ class SetupPage extends React.PureComponent<any, IState> {
   }
 
   private renderForm = (modified: boolean, loading:boolean, running:boolean, data: IData) => {
-    const {userAgent, host, workers, rampUp, requests, utm} = data;
+    const {userAgent, host, workers, rampUp, requests, utm, log200, log300, log400, log500, logError} = data;
     return <Fade tag='div' key='form'>
               <br/>
               <Button disabled={modified || loading || running} color="success" onClick={this.onStart}>Start</Button>{' '}
@@ -69,6 +76,11 @@ class SetupPage extends React.PureComponent<any, IState> {
                 requestsPerInterval={requests || 0}
                 utm={utm || ''}
                 useragent={userAgent}
+                log200={log200}
+                log300={log300}
+                log400={log400}
+                log500={log500}
+                logError={logError}
                 handleChange={this.handleChange}/>
             </Fade>
   }

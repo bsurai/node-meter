@@ -1,27 +1,21 @@
 import request from 'request';
 import delay from '../utils/delay';
+import {IMeterConfigs} from './AppConfig';
 
 export interface IRequestParams {
   path: string;
   proxy: string;
 }
 
-export interface IConfig {
-  host: string;
-  headers: [];
-  utm: string;
-  nginxUsrPsw: string;
-}
-
 const errors = [Error];
 
 export default class Agent {
-  private config: IConfig;
+  private config: IMeterConfigs;
   private sentReqests: number = 0;
   private goodResponses: number = 0;
   private badResponses: number = 0;
 
-  constructor(config: IConfig) {
+  constructor(config: IMeterConfigs) {
     this.config = config;
   }
 
@@ -52,7 +46,7 @@ export default class Agent {
     try {
       this.sentReqests++;
       // console.log('----- sent ------ ', item.proxy, item.productName, new Date());
-      const {host, headers, utm, nginxUsrPsw} = this.config;
+      const {host, headers, utm, nginxUsrPsw, logResponses} = this.config;
       const url = `https://${nginxUsrPsw}${host}/${item.path}${utm}`;
       const options = {
         url,
@@ -70,24 +64,42 @@ export default class Agent {
         // Print the response status code if a response was received
         //  console.log('body:', body);
 
-        if (!!response && !error && response.statusCode >= 200) {
+        if (error) {
           this.badResponses++;
-          console.log(response.statusCode, ' ', response.statusMessage, ' ', item.proxy, ' ', url);
-          return;
+          if (logResponses.error) {
+            console.log('Error: ', error.message);
+          }
         }
-        else if (error) {
+        else if (response && response.statusCode >= 500) {
           this.badResponses++;
-          console.log(error.message );
-          return;
+          if (logResponses[500]) {
+            console.log(response.statusCode, ' ', response.statusMessage, ' ', item.proxy, ' ', url);
+          }
         }
-        else if (!!response && response.statusCode === 200) {
+        else if (response && response.statusCode >= 400) {
+          this.badResponses++;
+          if (logResponses[400]) {
+            console.log(response.statusCode, ' ', response.statusMessage, ' ', item.proxy, ' ', url);
+          }
+        }
+        else if (response && response.statusCode >= 300) {
+          this.badResponses++;
+          if (logResponses[300]) {
+            console.log(response.statusCode, ' ', response.statusMessage, ' ', item.proxy, ' ', url);
+          }
+        }
+        else if (response && response.statusCode >= 200) {
           this.goodResponses++;
-          return;
+          if (logResponses[200]) {
+            console.log(response.statusCode, ' ', response.statusMessage, ' ', item.proxy, ' ', url);
+          }
         }
         else {
+          this.badResponses++;
           console.log('Error with the response: Something else');
-          return;
         }
+
+        return;
           /* errors.push(error);
           console.log('................');
           console.log('error:', error); // Print the error if one occurred

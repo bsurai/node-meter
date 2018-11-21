@@ -9,12 +9,16 @@ interface IFormProps {
   requestsPerInterval: number;
   utm: string;
   useragent: string;
+  log200: boolean;
+  log300: boolean;
+  log400: boolean;
+  log500: boolean;
+  logError: boolean;
   handleChange: (key: keyof IData) => (event: any) => void
 }
 
 const SetupForm = (props: IFormProps) => {
-  console.log('--SetupForm');
-  const {host, maxWorkers, rampUpInterval, requestsPerInterval, utm, useragent, handleChange} = props;
+  const {host, maxWorkers, rampUpInterval, requestsPerInterval, utm, useragent, handleChange, log200, log300, log400, log500, logError} = props;
   return (
     <>
       <Form>
@@ -28,6 +32,7 @@ const SetupForm = (props: IFormProps) => {
             </Col>
           </Row>
         </FormGroup>
+
         <FormGroup>
           <Row>
             <Col sm={4}><Label for="utm">UTM</Label></Col>
@@ -38,6 +43,7 @@ const SetupForm = (props: IFormProps) => {
             </Col>
           </Row>
         </FormGroup>
+
         <FormGroup>
           <Row>
             <Col sm={4}><Label for="useragent">User-Agent</Label></Col>
@@ -48,6 +54,7 @@ const SetupForm = (props: IFormProps) => {
             </Col>
           </Row>
         </FormGroup>
+
         <FormGroup>
           <Row>
             <Col sm={4}><Label for="rampup">Ramp-Up</Label></Col>
@@ -58,6 +65,7 @@ const SetupForm = (props: IFormProps) => {
             </Col>
           </Row>
         </FormGroup>
+
         <FormGroup>
           <Row>
             <Col sm={4}><Label for="requests">Requests per interval</Label></Col>
@@ -68,6 +76,7 @@ const SetupForm = (props: IFormProps) => {
             </Col>
           </Row>
         </FormGroup>
+
         <FormGroup>
           <Row>
             <Col sm={4}><Label for="workers">Max workers</Label></Col>
@@ -78,6 +87,37 @@ const SetupForm = (props: IFormProps) => {
             </Col>
           </Row>
         </FormGroup>
+
+        <Row>
+          <Col sm={4}><Label>Log responses</Label></Col>
+          <Col style={{textAlign: 'left'}}>
+            <FormGroup check inline>
+              <Label check>
+                <Input type="checkbox" checked={log200} onChange={handleChange('log200')}/> 200
+              </Label>
+            </FormGroup>
+            <FormGroup check inline>
+              <Label check>
+                <Input type="checkbox" checked={log300} onChange={handleChange('log300')}/> 300
+              </Label>
+            </FormGroup>
+            <FormGroup check inline>
+              <Label check>
+                <Input type="checkbox" checked={log400} onChange={handleChange('log400')}/> 400
+              </Label>
+            </FormGroup>
+            <FormGroup check inline>
+              <Label check>
+                <Input type="checkbox" checked={log500} onChange={handleChange('log500')}/> 500
+              </Label>
+            </FormGroup>
+            <FormGroup check inline>
+              <Label check>
+                <Input type="checkbox" checked={logError} onChange={handleChange('logError')}/> Other errors
+              </Label>
+            </FormGroup>
+          </Col>
+        </Row>
       </Form>
     </>);
 }
