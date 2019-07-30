@@ -4,6 +4,7 @@
   "description": "try to avoid java's jmeter",
   "scripts": {
     "install": "npm i --prefix ./backend && npm i --prefix ./frontend",
+    "compile": "npm --prefix ./backend run compile",
     "start": "node ./index.js"
   },
   "author": "Bogdan Surai",

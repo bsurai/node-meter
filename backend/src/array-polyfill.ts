@@ -35,7 +35,7 @@ Array.prototype.__find = function(callback) {
   const thisArg = arguments[1];
   for (let i = 0; i < length; i++) {
     const element = list[i];
-    if (callback.call(thisArg, element, i, list)) {
+    if ((callback.call as any)(thisArg, element, i, list)) {
       return element;
     }
   }
